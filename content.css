@@ -1,0 +1,147 @@
+.clip-button-main {
+  height: 64px;
+  width: 64px;
+  -webkit-box-flex: 1;
+  display: block;
+  border: 1px solid transparent !important;
+  -webkit-appearance: none;
+  border-radius: 2px;
+  background-color: transparent;
+  text-align: center;
+  margin-bottom: 16px;
+  cursor: pointer;
+}
+
+.blue {
+  background-color: #1ea6fc;
+}
+
+.blue:hover {
+  background-color: #029bfc;
+}
+
+.green {
+  background-color: #06e0d3;
+}
+
+.green:hover {
+  background-color: #13d8cc;
+}
+
+.clip-button-container {
+  margin: 0 37px;
+}
+
+.clip-draw-box {
+  display: none;
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  border: 0 solid #000;
+  opacity: .5;
+  filter: alpha(opacity=50);
+  z-index: 9999;
+  /* 过渡效果 */
+  /* 边缘闪动问题fix */
+  box-shadow: 0 0 0 100px #000;
+  box-sizing: initial;
+}
+
+.clip-draw-box::before {
+  content: '';
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  border: 400px solid #000;
+  position: absolute;
+  left: -400px;
+  top: -400px;
+}
+
+.clip-container {
+  z-index: 2147483646;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-top: -200px;
+  margin-left: -150px;
+  width: 400px;
+  height: 300px;
+  background-color: #fff;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.clip-overlay {
+  z-index: 2147483645;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: hsla(0, 0%, 0%, .25);
+  margin: 0;
+  padding: 0;
+}
+
+.clip-dot {
+  border: 1px solid #4885ed;
+  background-color: #fff;
+  width: 8px;
+  height: 8px;
+  position: absolute;
+}
+
+.corsor-e {
+  cursor: e-resize;
+}
+
+.corsor-s {
+  cursor: s-resize;
+}
+
+.corsor-ne {
+  cursor: ne-resize;
+}
+.corsor-ns {
+  cursor: ns-resize;
+}
+
+.corsor-ns {
+  cursor: nwse-resize;
+}
+
+.clip-right {
+  right: 0;
+  margin-right: -4px;
+}
+.clip-top {
+  top: 0;
+  margin-top: -4px;
+}
+.clip-left {
+  left: 0;
+  margin-left: -4px;
+}
+.clip-bottom {
+  bottom: 0;
+  margin-bottom: -4px;
+}
+
+.clip-center {
+  top: 50%;
+  margin-top: -4px;
+}
+
+.clip-center-h {
+  left: 50%;
+  margin-left: -4px;
+}

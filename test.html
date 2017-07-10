@@ -1,0 +1,132 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1280, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="content.css">
+  <style>
+    body {
+      background: #d26868;
+    }
+  </style>
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="clip-root">
+    <div class="clip-overlay"></div>
+    <div class="clip-draw-box">
+      <div class="clip-dot clip-right clip-top corsor-ne"></div>
+      <div id="clip-left-top" class="clip-dot clip-left clip-top corsor-ns"></div>
+      <div class="clip-dot clip-right clip-center corsor-e"></div>
+      <div class="clip-dot clip-left clip-center corsor-e"></div>
+      <div id="clip-right-bottom" class="clip-dot clip-right clip-bottom corsor-ns"></div>
+      <div class="clip-dot clip-left clip-bottom corsor-ne"></div>
+      <div class="clip-dot clip-left clip-center corsor-e"></div>
+      <div class="clip-dot clip-center-h clip-bottom corsor-s"></div>
+      <div class="clip-dot clip-center-h clip-top corsor-s"></div>
+    </div>
+    <div class="clip-container">
+      <div class="clip-button-container">
+        <button class="clip-button-main blue">
+        <img src="./ic_center_focus.png" alt="">
+      </button> 全屏录制
+      </div>
+      <div class="clip-button-container">
+        <button class="clip-button-main green">
+        <img src="./ic_crop.png" alt="">
+      </button> 区域录制
+      </div>
+    </div>
+  </div>
+</body>
+<script>
+  let x = 0, y = 0, height = 100, width = 100;
+  const $ = document.querySelector.bind(document)
+  const btnCropRecord = document.querySelector('.clip-button-main.green')
+  const box = $('.clip-draw-box')
+  btnCropRecord.addEventListener('click', () => {
+    $('.clip-overlay').style.display = 'none'
+    $('.clip-container').style.display = 'none'
+    box && (sizeShader(box))
+    box.style.display = 'block'
+  })
+
+  const handleMouseDown = (handleX, handleY, handleHeight, handleWidth) => (eMouseDown) => {
+    eMouseDown.preventDefault();
+    eMouseDown.stopPropagation()
+    const dragOffsetX = eMouseDown.pageX;
+    const dragOffsetY = eMouseDown.pageY;
+    const oldHeight = height;
+    const oldWidth = width;
+    const oldX = x;
+    const oldY = y;
+    const handleMouseMove = (e) => {
+      let offsetX = e.pageX - dragOffsetX;
+      let offsetY = e.pageY - dragOffsetY;
+      const nh = oldHeight + offsetY
+      const nw = oldWidth + offsetX
+      const nx = oldX + offsetX;
+      const ny = oldY + offsetY;
+      if (handleX) {
+        x = nx > 0 ? nx : 0
+      }
+      if (handleY) {
+        y = ny > 0 ? ny : 0
+      }
+      if (handleHeight) {
+        if (handleY) {
+          height = oldHeight - (y - oldY)
+          if (height < 100) {
+            height = 100;
+            y = oldY + (oldHeight - 100)
+          }
+        } else {
+          height = nh > 100 ? nh : 100
+        }
+      }
+      if (handleWidth) {
+        if (handleX) {
+          width = oldWidth - (x - oldX)
+          if (width < 100) {
+            width = 100;
+            x = oldX + (oldWidth - 100)
+          }
+        } else {
+          width = nw > 100 ? nw : 100
+        }
+      }
+      sizeShader(box)
+    }
+    handleMouseUp = (e) => {
+      document.removeEventListener('mousemove', handleMouseMove)
+      document.removeEventListener('mouseup', handleMouseUp)
+    }
+
+    document.addEventListener('mousemove', handleMouseMove)
+    document.addEventListener('mouseup', handleMouseUp)
+  }
+
+  $('#clip-right-bottom').addEventListener('mousedown', handleMouseDown(false, false, true, true))
+  $('#clip-left-top').addEventListener('mousedown', handleMouseDown(true, true, true, true))
+  $('.clip-draw-box').addEventListener('mousedown',handleMouseDown(true,true,false,false))
+  $('.clip-right.clip-top').addEventListener('mousedown',handleMouseDown(false,true,true,true))
+
+  function sizeShader(target) {
+    const body = document.body;
+    const doc = document.documentElement;
+    const pageHeight = doc.scrollHeight;
+    const pageWidth = doc.scrollWidth;
+    const offsetTop = y + (body.scrollTop || doc.scrollTop);
+    const offsetLeft = x + (body.scrollLeft || doc.scrollLeft);
+    target.style.borderWidth = `${offsetTop}px ${(pageWidth - width - offsetLeft)}px ${(pageHeight - height - offsetTop)}px ${offsetLeft}px`;
+    // target.style.left = x;
+    // target.style.top = y;
+    target.style.height = height;
+    target.style.width = width;
+  }
+
+</script>
+
+</html>
